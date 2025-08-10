@@ -28,7 +28,6 @@ def start(message):
         "Введите код задачи (например: \"pr000001\"):",
     )
 
-
 @bot.message_handler(content_types=['text', 'document'])
 def handle_all_messages(message):
     user_id = message.from_user.id
