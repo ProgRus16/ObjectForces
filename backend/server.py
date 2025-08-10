@@ -1,4 +1,3 @@
-import os
 from socketserver import BaseRequestHandler, TCPServer
 import json
 from gigachat import GigaChat
