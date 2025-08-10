@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header>
+        <div style="display: flex; justify-content: space-between">
+            <div>
+                <h1>ObjectForces</h1>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span><a href="">Войти</a> | <a href="">Зарегистрироваться</a></span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div>
+            <div>
+                <span>Введите код задачи:</span>
+                <input type="text" value="" placeholder="сюда! не промахнись :)">
+            </div>
+            <div>
+                <span>Введите свой код участника:</span>
+                <input type="text" value="" placeholder="а код участника сюда!">
+            </div>
+            <div>
+                <div>
+                    <span>Введите своё решение / ответ:</span>
+                    <textarea name="" id=""></textarea>
+                </div>
+                <div>
+                    <div class="text-with-hint-container">
+                        <div class="text-with-hint">
+                            Или загрузите файл:
+                            <span class="hint-trigger">?</span>
+                            <div class="hint-content">Если вы загружаете решение задачи на программирование, допустимы все расширения файлов, соответствующие разрешённым языкам программирования; в противном случае отправляйте ответ файлом ТОЛЬКО в расширении TXT</div>
+                        </div>
+                    </div>
+                    <input type="file" name="" id="">
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hintTrigger = document.querySelector('.hint-trigger');
+            const hintContent = document.querySelector('.hint-content');
+
+            hintTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                hintContent.classList.toggle('show-hint');
+            });
+            document.addEventListener('click', function() {
+                hintContent.classList.remove('show-hint');
+            });
+            hintContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>

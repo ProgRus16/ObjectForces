@@ -1,0 +1,65 @@
+.hint-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: #4285f4;
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+    vertical-align: super;
+    line-height: 1;
+    transition: all 0.2 ease;
+}
+.hint-trigger:hover {
+    background-color: #3367d3;
+    transform: scale(1, 1);
+}
+
+.hint-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px  12px rgba(0, 0, 0, 0.15);
+    width: 250px;
+    z-index: 100;
+    display: none;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.hint-content:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+.show-hint {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
