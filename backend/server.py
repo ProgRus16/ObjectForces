@@ -27,12 +27,18 @@ class TaskChecker(BaseRequestHandler):
             print("it worked! 4")
             print(correct_answer)
             if correct_answer == 'ДА':
-                response = {'result': '✅ Верно!'}
+                toSend = {'result': '✅ Верно!'}
             else:
-                response = {'result': '❌ Не верно',
-                            'comment': correct_answer.split("_")[1]}
+                content_parts = correct_answer.split("_", 1)
+                f_response = [content_parts[0], content_parts[1].lstrip("_")]
+                print("it worked! 4.5")
+                comment = f_response[1]
+                toSend = {'result': '❌ Не верно',
+                            'comment': comment}
+                print(f_response)
+                print(comment)
             print("it worked! 5")
-            self.request.sendall(json.dumps(response).encode())
+            self.request.sendall(json.dumps(toSend).encode())
             print("it worked! 6")
         except Exception as e:
             print(f"Ошибка: {e}")
@@ -40,7 +46,7 @@ class TaskChecker(BaseRequestHandler):
 
 def check_solution(content, taskText):
     with GigaChat(credentials="NzhhM2ExM2ItMDRhNS00YTBhLWJhMjktYTU2NDA5NTEwNDllOjRjZjhlZDZlLWQ3MGItNGE5MC05NmRiLTgyNzY4ZDcxODY0Yw==", verify_ssl_certs=False) as giga:
-        response = giga.chat(f"Дана задача: \"{taskText}\" и её решение, приведённое пользователем: \"{content}\". Ответь \"ДА\" или \"НЕТ\", правильно ли приведённое решение задачи. если решение верно, то не пиши ничего, кроме одного слова \"ДА\", в противном случае пиши \"НЕТ\" и через нижнее подчёркивание пиши комментарий (пример: НЕТ_так не работает, потому что (и так далее, продолжаешь)). Если не совпадает итоговый ответ, есть упущения в логике и т.п., пиши \"НЕТ\", оценивай по всей строгости и следи, чтобы решение было максимально похоже на оригинальное. Будь максимально умён и не допускай ошибок - не называй хорошее решение неправильным, а плохое - верным. Если у тебя всё получится - будешь молодец, если не получится - то кому-то капец.")
+        response = giga.chat(f"Дана задача: \"{taskText}\" и её решение, приведённое пользователем: \"{content}\". Ответь \"ДА\" или \"НЕТ\", правильно ли приведённое решение задачи. если решение верно, то не пиши ничего, кроме одного слова \"ДА\", в противном случае пиши \"НЕТ\" и через ОДНО нижнее подчёркивание пиши комментарий (пример: НЕТ_так не работает, потому что (и так далее, продолжаешь)). Если не совпадает итоговый ответ, есть упущения в логике и т.п., пиши \"НЕТ\", оценивай по всей строгости и следи, чтобы решение было максимально похоже на оригинальное. Будь максимально умён и не допускай ошибок - не называй хорошее решение неправильным, а плохое - верным. Если у тебя всё получится - будешь молодец, если не получится - то кому-то капец.")
         return response.choices[0].message.content
 if __name__ == "__main__":
     HOST, PORT = "127.0.0.1", 65432
