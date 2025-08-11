@@ -1,7 +1,17 @@
 from socketserver import BaseRequestHandler, TCPServer
 import json
 from gigachat import GigaChat
+import pandas as pd
+df = pd.read_parquet('../math_problems.parquet', engine='pyarrow')
+# Отключаем ограничения на количество отображаемых столбцов и строк
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
+# Убираем ограничение ширины колонок
+pd.set_option('display.width', None)
+
+# Полностью показываем содержимое каждой ячейки
+pd.set_option('display.max_colwidth', None)
 class TaskChecker(BaseRequestHandler):
     def handle(self):
         try:
@@ -12,15 +22,13 @@ class TaskChecker(BaseRequestHandler):
             task_id = data['task_id']
             participant_name = data['participant_name']
             solution_file_path = f"../tgbot/submissions/{task_id}_{participant_name}.txt"
-            problem_file_path = f"tasks/{task_id}.txt"
             print("it worked! 1")
             # Загружаем решение пользователя
             with open(solution_file_path, 'r') as sol_file:
                 user_solution = sol_file.read().strip()
             print("it worked! 2")
             # Загружаем условие задачи
-            with open(problem_file_path, 'r') as prob_file:
-                task_text = prob_file.read().strip()
+            task_text = "Task: " + df.iloc[task_id, 0] + "Solution: " + df.iloc[task_id-1, 0]
             print("it worked! 3")
             # Здесь выполняется логика проверки решения
             correct_answer = str(check_solution(user_solution, task_text))
