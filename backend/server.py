@@ -19,16 +19,19 @@ class TaskChecker(BaseRequestHandler):
             request_data = self.request.recv(1024).strip()
             data = json.loads(request_data.decode())
             
-            task_id = data['task_id']
+            task_code = data['task_id']
+            task_id = int(task_code.split("_")[0].split("-")[-1])
+            print(f"гойда {task_id}")
             participant_name = data['participant_name']
-            solution_file_path = f"../tgbot/submissions/{task_id}_{participant_name}.txt"
+            timestamp = data['timestamp']
+            solution_file_path = f"../tgbot/submissions/{task_code}_{participant_name}_{timestamp}.txt"
             print("it worked! 1")
             # Загружаем решение пользователя
             with open(solution_file_path, 'r') as sol_file:
                 user_solution = sol_file.read().strip()
             print("it worked! 2")
             # Загружаем условие задачи
-            task_text = "Task: " + df.iloc[task_id, 0] + "Solution: " + df.iloc[task_id-1, 0]
+            task_text = "Task: " + df.iloc[task_id, 0] + "Solution: " + df.iloc[task_id, 1]
             print("it worked! 3")
             # Здесь выполняется логика проверки решения
             correct_answer = str(check_solution(user_solution, task_text))
@@ -41,8 +44,8 @@ class TaskChecker(BaseRequestHandler):
                 f_response = [content_parts[0], content_parts[1].lstrip("_")]
                 print("it worked! 4.5")
                 comment = f_response[1]
-                toSend = {'result': '❌ Не верно',
-                            'comment': comment}
+                toSend = {"result": "❌ Не верно",
+                            "comment": comment}
                 print(f_response)
                 print(comment)
             print("it worked! 5")
@@ -50,7 +53,7 @@ class TaskChecker(BaseRequestHandler):
             print("it worked! 6")
         except Exception as e:
             print(f"Ошибка: {e}")
-            self.request.sendall(b"{'result': false}")
+            self.request.sendall(b"{\"result\": false}")
 
 def check_solution(content, taskText):
     with GigaChat(credentials="NzhhM2ExM2ItMDRhNS00YTBhLWJhMjktYTU2NDA5NTEwNDllOjRjZjhlZDZlLWQ3MGItNGE5MC05NmRiLTgyNzY4ZDcxODY0Yw==", verify_ssl_certs=False) as giga:
